@@ -1,0 +1,104 @@
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.alert-dialog {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-dialog h3 {
+  margin: 0 0 12px;
+  color: #1e293b;
+  font-size: 1.25rem;
+}
+
+.alert-dialog p {
+  margin: 0 0 24px;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.alert-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.alert-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.alert-button.cancel {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.alert-button.cancel:hover {
+  background: #cbd5e1;
+}
+
+.alert-button.confirm {
+  background: #22c55e;
+  color: white;
+  padding: 8px 20px;
+  font-weight: 600;
+}
+
+.alert-button.confirm:hover {
+  background: #16a34a;
+  transform: translateY(-1px);
+}
+
+.alert-button.confirm:active {
+  transform: translateY(0);
+}
+
+/* Add loading state styles */
+.alert-button.confirm:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Dark mode styles */
+.dark-mode .alert-dialog {
+  background: #1e293b;
+}
+
+.dark-mode .alert-dialog h3 {
+  color: #f1f5f9;
+}
+
+.dark-mode .alert-dialog p {
+  color: #94a3b8;
+}
+
+.dark-mode .alert-button.cancel {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.dark-mode .alert-button.cancel:hover {
+  background: #475569;
+} 

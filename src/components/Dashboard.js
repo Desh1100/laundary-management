@@ -7,6 +7,10 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  doc,
+  getDoc,
+  setDoc,
+  runTransaction,
 } from "firebase/firestore";
 import "./Dashboard.css";
 import {
@@ -33,6 +37,12 @@ const Dashboard = ({ user }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [formErrors, setFormErrors] = useState({
+    name: "",
+    phone: "",
+    completionDate: "",
+    price: "",
+  });
 
   useEffect(() => {
     fetchOrders();
@@ -46,8 +56,9 @@ const Dashboard = ({ user }) => {
       );
       const querySnapshot = await getDocs(ordersQuery);
       const ordersData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
         ...doc.data(),
+        id: doc.id,
+        orderId: doc.data().id || 0,
         createdAt: doc.data().createdAt?.toDate().toLocaleString() || "N/A",
       }));
       setOrders(ordersData);
@@ -60,18 +71,107 @@ const Dashboard = ({ user }) => {
     }
   };
 
+  const validateForm = () => {
+    const errors = {
+      name: "",
+      phone: "",
+      completionDate: "",
+      price: "",
+    };
+    let isValid = true;
+
+    // Name validation
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+      isValid = false;
+    } else if (formData.name.trim().length < 3) {
+      errors.name = "Name must be at least 3 characters";
+      isValid = false;
+    }
+
+    // Phone validation (Sri Lankan format)
+    const phoneRegex = /^(?:7|0)[0-9]{8,9}$/;
+    if (!formData.phone) {
+      errors.phone = "Phone number is required";
+      isValid = false;
+    } else if (!phoneRegex.test(formData.phone)) {
+      errors.phone = "Enter a valid Sri Lankan phone number";
+      isValid = false;
+    }
+
+    // Completion date validation
+    const selectedDate = new Date(formData.completionDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (!formData.completionDate) {
+      errors.completionDate = "Completion date is required";
+      isValid = false;
+    } else if (selectedDate < today) {
+      errors.completionDate = "Completion date cannot be in the past";
+      isValid = false;
+    }
+
+    // Price validation
+    if (!formData.price) {
+      errors.price = "Price is required";
+      isValid = false;
+    } else if (isNaN(formData.price) || Number(formData.price) <= 0) {
+      errors.price = "Enter a valid price";
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors({ ...formErrors, [name]: "" });
+    }
+  };
+
+  const getNextOrderId = async () => {
+    const counterRef = doc(db, "counters", "orderId");
+
+    try {
+      const result = await runTransaction(db, async (transaction) => {
+        const counterDoc = await transaction.get(counterRef);
+
+        let nextId = 1;
+        if (counterDoc.exists()) {
+          nextId = counterDoc.data().value + 1;
+        }
+
+        transaction.set(counterRef, { value: nextId });
+        return nextId;
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Error getting next order ID:", error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setStatus({ message: "", type: "" });
 
     try {
+      const orderId = await getNextOrderId();
+
       const orderData = {
+        id: orderId,
         ...formData,
         price: Number(formData.price),
         createdAt: serverTimestamp(),
@@ -91,7 +191,7 @@ const Dashboard = ({ user }) => {
       });
 
       setStatus({
-        message: "Order placed successfully!",
+        message: `Order #${orderId} placed successfully!`,
         type: "success",
       });
     } catch (error) {
@@ -110,6 +210,18 @@ const Dashboard = ({ user }) => {
     document.body.classList.toggle("dark-mode");
   };
 
+  const getTomorrowsOrders = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    return orders.filter((order) => {
+      const completionDate = new Date(order.completionDate);
+      completionDate.setHours(0, 0, 0, 0);
+      return completionDate.getTime() === tomorrow.getTime();
+    });
+  };
+
   const renderOrderForm = () => (
     <div className="order-form">
       <h2>New Order</h2>
@@ -124,8 +236,12 @@ const Dashboard = ({ user }) => {
               placeholder="Enter customer name"
               value={formData.name}
               onChange={handleInputChange}
+              className={formErrors.name ? "error" : ""}
               required
             />
+            {formErrors.name && (
+              <span className="error-message">{formErrors.name}</span>
+            )}
           </div>
 
           <div className="input-group">
@@ -137,8 +253,12 @@ const Dashboard = ({ user }) => {
               placeholder="Ex: 771234567"
               value={formData.phone}
               onChange={handleInputChange}
+              className={formErrors.phone ? "error" : ""}
               required
             />
+            {formErrors.phone && (
+              <span className="error-message">{formErrors.phone}</span>
+            )}
           </div>
 
           <div className="input-group">
@@ -149,8 +269,12 @@ const Dashboard = ({ user }) => {
               name="completionDate"
               value={formData.completionDate}
               onChange={handleInputChange}
+              className={formErrors.completionDate ? "error" : ""}
               required
             />
+            {formErrors.completionDate && (
+              <span className="error-message">{formErrors.completionDate}</span>
+            )}
           </div>
 
           <div className="input-group">
@@ -162,8 +286,12 @@ const Dashboard = ({ user }) => {
               placeholder="Enter price"
               value={formData.price}
               onChange={handleInputChange}
+              className={formErrors.price ? "error" : ""}
               required
             />
+            {formErrors.price && (
+              <span className="error-message">{formErrors.price}</span>
+            )}
           </div>
         </div>
 
@@ -180,15 +308,31 @@ const Dashboard = ({ user }) => {
 
   const renderOrderCard = (order) => (
     <div key={order.id} className="order-card">
-      <h3>{order.name}</h3>
-      <p>Phone: {order.phone}</p>
-      <p>
-        Completion Date: {new Date(order.completionDate).toLocaleDateString()}
-      </p>
-      <p>Price: Rs. {order.price}</p>
-      <p>Status: {order.status}</p>
-      <p>Created: {order.createdAt}</p>
-      <p>Cashier: {order.cashierName}</p>
+      <div className="order-header">
+        <h3>Order #{order.orderId || "N/A"}</h3>
+        <span className={`status-badge ${order.status}`}>{order.status}</span>
+      </div>
+      <div className="order-details">
+        <p>
+          <strong>Customer:</strong> {order.name}
+        </p>
+        <p>
+          <strong>Phone:</strong> {order.phone}
+        </p>
+        <p>
+          <strong>Completion Date:</strong>{" "}
+          {new Date(order.completionDate).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Price:</strong> Rs. {order.price}
+        </p>
+        <p>
+          <strong>Created:</strong> {order.createdAt}
+        </p>
+        <p>
+          <strong>Cashier:</strong> {order.cashierName}
+        </p>
+      </div>
     </div>
   );
 
@@ -235,7 +379,7 @@ const Dashboard = ({ user }) => {
                 {darkMode ? <FaSun /> : <FaMoon />}
               </button>
               <div className="user-info">
-                <span>Welcome, {user.displayName || "Cashier"}</span>
+                <span>{user.displayName || "Cashier"}</span>
                 <button
                   className="logout-button"
                   onClick={() => auth.signOut()}
@@ -250,43 +394,55 @@ const Dashboard = ({ user }) => {
         <div className="content-area">
           {activeTab === "dashboard" && (
             <>
-              <div className="stats-grid">
-                <div className="stat-card">
-                  <h3>Total Orders</h3>
-                  <p>{orders.length}</p>
+              <div className="dashboard-layout">
+                <div className="stats-grid">
+                  <div className="stat-card">
+                    <h3>Total Orders</h3>
+                    <p>{orders.length}</p>
+                  </div>
+                  <div className="stat-card">
+                    <h3>Pending Orders</h3>
+                    <p>
+                      {
+                        orders.filter((order) => order.status === "pending")
+                          .length
+                      }
+                    </p>
+                  </div>
+                  <div className="stat-card">
+                    <h3>Completed Orders</h3>
+                    <p>
+                      {
+                        orders.filter((order) => order.status === "completed")
+                          .length
+                      }
+                    </p>
+                  </div>
+                  <div className="stat-card highlight">
+                    <h3>Due Tomorrow</h3>
+                    <p>{getTomorrowsOrders().length}</p>
+                  </div>
                 </div>
-                <div className="stat-card">
-                  <h3>Pending Orders</h3>
-                  <p>
-                    {
-                      orders.filter((order) => order.status === "pending")
-                        .length
-                    }
-                  </p>
-                </div>
-                <div className="stat-card">
-                  <h3>Completed Orders</h3>
-                  <p>
-                    {
-                      orders.filter((order) => order.status === "completed")
-                        .length
-                    }
-                  </p>
-                </div>
-              </div>
 
-              {renderOrderForm()}
+                <div className="order-form-container">{renderOrderForm()}</div>
 
-              <div className="orders-list">
-                <h2>Recent Orders</h2>
-                <div className="orders-grid">{orders.map(renderOrderCard)}</div>
+                {getTomorrowsOrders().length > 0 && (
+                  <div className="orders-list tomorrow-orders">
+                    <h2>Orders Due Tomorrow</h2>
+                    <div className="orders-grid">
+                      {getTomorrowsOrders().map(renderOrderCard)}
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}
 
           {activeTab === "completed" && <CompletedOrders orders={orders} />}
 
-          {activeTab === "inprocess" && <InProgressOrders orders={orders} />}
+          {activeTab === "inprocess" && (
+            <InProgressOrders orders={orders} fetchOrders={fetchOrders} />
+          )}
 
           {activeTab === "settings" && <Settings user={user} />}
         </div>
