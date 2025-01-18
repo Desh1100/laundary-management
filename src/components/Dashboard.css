@@ -4,17 +4,17 @@
 }
 
 .sidebar {
-  width: 280px;
+  width: 260px;
   background: #2c3e50;
   color: white;
-  padding: 15px;
+  padding: 12px;
 }
 
 .sidebar-header h2 {
   margin: 0;
-  padding: 25px 0;
+  padding: 20px 0;
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .sidebar-nav {
@@ -27,8 +27,8 @@
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 18px 20px;
+  gap: 12px;
+  padding: 15px 18px;
   border: none;
   background: none;
   color: white;
@@ -37,7 +37,7 @@
   text-align: left;
   border-radius: 4px;
   transition: background-color 0.2s;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .nav-item:hover {
@@ -58,7 +58,7 @@
   background: white;
   border-bottom: 1px solid #e2e8f0;
   padding: 0;
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
 }
@@ -73,7 +73,7 @@
 
 .header-content h1 {
   color: #1e293b;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
 }
@@ -94,14 +94,14 @@
 .user-info span {
   color: #64748b;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .theme-toggle {
   background: #f1f5f9;
   color: #64748b;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   border: none;
   border-radius: 8px;
   display: flex;
@@ -121,8 +121,8 @@
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 8px 16px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -145,8 +145,8 @@
 
 .stat-card {
   background: white;
-  padding: 30px;
-  border-radius: 18px;
+  padding: 25px;
+  border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -159,15 +159,15 @@
 .stat-card h3 {
   margin: 0;
   color: #64748b;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .stat-card p {
-  margin: 20px 0 0;
-  font-size: 2.8rem;
+  margin: 15px 0 0;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #1e293b;
 }
@@ -192,8 +192,8 @@
 .dark-mode .theme-toggle {
   background: #334155;
   color: #94a3b8;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
 }
 
 .dark-mode .theme-toggle:hover {
@@ -267,9 +267,9 @@
 }
 
 .status-badge {
-  padding: 8px 16px;
-  border-radius: 25px;
-  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 500;
   text-transform: capitalize;
 }
@@ -292,9 +292,9 @@
 }
 
 .order-details p {
-  margin: 12px 0;
+  margin: 8px 0;
   color: #475569;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .order-details strong {
@@ -366,15 +366,15 @@
 
 .order-form {
   background: white;
-  padding: 35px;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .order-form h2 {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   color: #2c3e50;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   text-align: center;
 }
 
@@ -392,18 +392,18 @@
 
 .input-group label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-weight: 500;
   color: #64748b;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .input-group input {
   width: 100%;
-  padding: 14px 18px;
+  padding: 12px 16px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  border-radius: 10px;
+  font-size: 1rem;
   transition: all 0.2s ease;
   background: #f8fafc;
 }
@@ -416,13 +416,13 @@
 }
 
 .submit-button {
-  margin-top: 35px;
-  padding: 16px 32px;
+  margin-top: 30px;
+  padding: 12px 24px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -489,7 +489,7 @@
   }
   
   .stat-card p {
-    font-size: 2.4rem;
+    font-size: 2rem;
   }
 } 
 
@@ -529,8 +529,8 @@
 
 .error-message {
   color: #ef4444;
-  font-size: 0.9rem;
-  margin-top: 6px;
+  font-size: 0.85rem;
+  margin-top: 4px;
 }
 
 /* Dark mode updates */
@@ -545,16 +545,16 @@
 
 /* Update sidebar icon styles */
 .nav-item svg {
-  font-size: 1.8rem;
-  min-width: 28px;
+  font-size: 1.5rem;
+  min-width: 24px;
 }
 
 /* Update theme toggle icon */
 .theme-toggle {
   background: #f1f5f9;
   color: #64748b;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   border: none;
   border-radius: 8px;
   display: flex;
@@ -565,7 +565,7 @@
 }
 
 .theme-toggle svg {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 }
 
 /* Update search icon size */
@@ -584,22 +584,177 @@
 .dark-mode .theme-toggle {
   background: #334155;
   color: #94a3b8;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .nav-item svg {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
   
   .theme-toggle {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   
   .theme-toggle svg {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+} 
+
+/* Base font size control */
+html {
+  font-size: 16px; /* Set base font size */
+}
+
+/* Sidebar adjustments */
+.sidebar {
+  width: 240px; /* Slightly reduced */
+  padding: 12px;
+}
+
+.sidebar-header h2 {
+  font-size: 1.5rem; /* Reduced from 1.8rem */
+  padding: 20px 0;
+}
+
+.nav-item {
+  padding: 15px 18px;
+  font-size: 1rem;
+  gap: 12px;
+}
+
+.nav-item svg {
+  font-size: 1.5rem; /* Reduced from 1.8rem */
+  min-width: 24px;
+}
+
+/* Header adjustments */
+.top-header {
+  height: 80px; /* Reduced from 100px */
+}
+
+.header-content h1 {
+  font-size: 1.5rem; /* Reduced from 1.8rem */
+}
+
+.theme-toggle {
+  width: 42px; /* Reduced from 50px */
+  height: 42px;
+}
+
+.theme-toggle svg {
+  font-size: 1.3rem; /* Reduced from 1.6rem */
+}
+
+.user-info span {
+  font-size: 1rem; /* Reduced from 1.1rem */
+}
+
+.logout-button {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+}
+
+/* Stats cards */
+.stat-card {
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.stat-card h3 {
+  font-size: 1rem;
+}
+
+.stat-card p {
+  font-size: 2.2rem; /* Reduced from 2.8rem */
+  margin-top: 15px;
+}
+
+/* Order form */
+.order-form {
+  padding: 30px;
+}
+
+.order-form h2 {
+  font-size: 1.5rem; /* Reduced from 1.8rem */
+  margin-bottom: 25px;
+}
+
+.input-group label {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+.submit-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  margin-top: 30px;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 20px;
+}
+
+/* Order details */
+.order-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+}
+
+/* Error messages */
+.error-message {
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Dark mode adjustments */
+.dark-mode .theme-toggle {
+  width: 42px;
+  height: 42px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+  
+  .sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .sidebar {
+    width: 220px;
+  }
+  
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .theme-toggle svg {
+    font-size: 1.1rem;
+  }
+  
+  .stat-card p {
+    font-size: 2rem;
   }
 } 
